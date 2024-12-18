@@ -1,0 +1,27 @@
+(include "./modules.yuck")
+
+(defwidget left-modules []
+    (systray :orientation "horizontal"
+        :space-evenly true
+        :icon-size 16
+        :spacing 6
+        :style "margin-left: 4px"))
+(defwidget center-modules [] (workspaces-module))
+(defwidget right-modules []
+    (box :space-evenly false
+        (battery-module)
+        (volume-module)
+        (ram-usage-module)
+        (datetime-module)
+        (power-module)))
+
+(defwidget bar []
+    (centerbox :orientation "horizontal"
+        (box :halign "start" (left-modules))
+        (box :halign "center" (center-modules))
+        (box :halign "end" (right-modules))))
+
+(defwindow huzz-bar :monitor 0
+    :geometry (geometry :width "100%" :height "3%" :anchor "center top") ; only the center anchor reserves space for some reason
+    :exclusive true
+    (bar))

@@ -1,0 +1,62 @@
+; workspaces
+(defvar magic_workspace_active false)
+(deflisten workspaces :initial "[]" "./workspaces.py")
+
+(defwidget workspaces-module []
+    (box :orientation "horizontal" :class "workspaces-module"
+        (for workspace in workspaces
+            (button :class `${workspace.active || magic_workspace_active ? "active" : "inactive"}`
+                    :onclick "hyprctl dispatch workspace ${workspace.id}"
+                {workspace.active ? "◆" : "◇"}))))
+
+; power button
+(defvar show-power-widget false)
+
+(defwidget power-module []
+    (eventbox :onhoverlost "${EWW_CMD} update show-power-widget=false"
+        (box :class "power-module" :space-evenly false
+            (button :onclick "${EWW_CMD} update show-power-widget=true"
+                :style `margin-right: ${show-power-widget ? 6 : 0}px`
+                :tooltip `${show-power-widget ? "Shutdown" : "Power options"}`
+                (label :class "glyph" :text ""))
+            (revealer :transition "slideright" :reveal show-power-widget
+                (box :class "power-widget" :orientation "horizontal"
+                    (button :class "reboot" :onclick "reboot" :tooltip "Reboot"
+                        (label :class "glyph" :text ""))
+                    (button :class "logout" :onclick "hyprctl dispatch exit"
+                        :tooltip "Logout" :style "margin-left: 6px"
+                        (label :class "glyph" :text "")))))))
+
+; date and time
+(defpoll datetime :interval "10s" "date '+%a %d %H:%M' | tr 'a-z' 'A-Z'")
+
+(defwidget datetime-module []
+    (box :class "datetime-module" datetime))
+
+; ram usage
+(defwidget ram-usage-module []
+    (box :class "ram-usage-module"
+        (label :class "glyph" :text "") "${round(EWW_RAM.used_mem_perc, 0)}%"))
+
+; volume
+(deflisten audio "./audio.sh")
+
+(defwidget volume-module []
+    (box :class "volume-module" :space-evenly false
+        (label :class "glyph" :text {audio.sink-icon})
+        (scale :value {audio.sink-volume}
+            :min 0 :max 100.9
+            :orientation "horizontal"
+            :draw-value true
+            :round-digits 1
+            :onchange "pactl set-sink-volume @DEFAULT_SINK@ {}%")))
+
+; battery
+(defpoll battery :interval "5s" "./battery.sh")
+
+(defwidget battery-module []
+    (box :class "battery-module"
+        :tooltip "${EWW_BATTERY.BAT0.status} battery at ${EWW_BATTERY.BAT0.capacity}%"
+        :space-evenly false
+        (label :class "glyph" :text {battery.icon})
+        (progress :class "battery-level-${battery.class}" :value {battery.capacity})))

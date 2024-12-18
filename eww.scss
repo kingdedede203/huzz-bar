@@ -1,0 +1,157 @@
+$primary: #f7fcb6;
+$secondary: #707066;
+$bar-color: #212121;
+$widget-background: #323232;
+$widget-background-alt: #2d2d2d;
+
+* {
+    all: unset;
+    margin: 0;
+    padding: 0;
+}
+
+window {
+    font-family: 'Terminus (TTF)';
+    background-color: $bar-color;
+
+    > * {
+        margin: 4px;
+    }
+}
+
+tooltip {
+    font-family: 'Terminus (TTF)';
+    background-color: $widget-background;
+    border-radius: 3px;
+}
+
+label.glyph {
+    font-family: 'Font Awesome 6 Free';
+}
+
+.workspaces-module {
+    font-family: 'Iosevka';
+    margin-left: 12px;
+    
+    button {
+        margin-right: 6px;
+        
+        &.active {
+            color: $primary;
+        }
+        
+        &.inactive {
+            color: $secondary;
+        }
+    }
+}
+
+.power-module {
+    padding: 0 6px;
+    font-size: 16px;
+    border-radius: 3px;
+    background-color: $widget-background;
+}
+
+.power-module revealer .power-widget {
+    background-color: $widget-background;
+}
+
+.datetime-module {
+    margin-right: 6px;
+    padding: 0 6px;
+    font-size: 16px;
+    border-radius: 3px;
+    background-color: $widget-background;
+} 
+
+.ram-usage-module {
+    margin-right: 6px;
+    padding-left: 6px;
+    padding-right: 6px;
+    font-size: 16px;
+    border-radius: 3px;
+    background-color: $widget-background;
+    label.glyph {
+        margin-right: 4px;
+    }
+}
+
+.volume-module {
+    margin-right: 6px;
+    border-radius: 3px;
+    background-color: $widget-background;
+
+    label {
+        padding-top: 1px;
+        padding-left: 6px;
+        padding-right: 6px;
+    }
+
+    scale {
+        value {
+            font-size: 13px;
+        }
+
+        trough {
+            border-radius: 3px;
+            background-color: $widget-background-alt;
+            min-width: 75px;
+            min-height: 6px;
+
+            highlight {
+                background-color: $primary;
+                border-radius: 3px;
+            }
+        }
+    }
+}
+
+.battery-module {
+    margin-right: 6px;
+    padding-left: 6px;
+    border-radius: 3px;
+    background-color: $widget-background;
+
+    label {
+        padding-top: 1px;
+        margin-right: 6px;
+    }
+
+    progressbar {
+        $battery-level-0-color: #d58484;
+        $battery-level-1-color: #f6c879;
+        $battery-level-2-color: #fef39c;
+        $battery-level-3-color: $primary;
+        
+        trough {
+            border-radius: 3px;
+            background: $widget-background;
+            min-width: 75px;
+            min-height: 22px;
+
+            progress {
+                border-radius: 3px;
+                min-height: 22px;
+            }
+        }
+
+        &.battery-level-0 trough progress {
+            background-color: $battery-level-0-color;
+        }
+
+        &.battery-level-1 trough progress {
+            background-color: $battery-level-1-color;
+        }
+
+        &.battery-level-2 trough progress {
+            background-color: $battery-level-2-color;
+        }
+
+        &.battery-level-3, &.battery-level-4 {
+            trough progress {
+                background: $battery-level-3-color;
+            }
+        }
+    }
+}
